@@ -1,13 +1,16 @@
 import React from "react";
+import CourseCard from "./CourseCard";
 
-export default function CourseList({ courses }) {
+const CoursesList = ({ courses }) => {
   return (
-    <div className="course-list">
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
       {Object.entries(courses).map(([id, info]) => (
-        <div key={id}>
-          {info.term} CS {info.number}: {info.title}
+        <div key={id} style={{ flex: "1", width: "250px", margin: "10px" }}>
+          <CourseCard id={id} info={info} />
         </div>
       ))}
     </div>
   );
-}
+};
+
+export default CoursesList;
