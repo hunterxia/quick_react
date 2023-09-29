@@ -1,15 +1,15 @@
-import React from "react";
 import CourseCard from "./CourseCard";
+import Grid from "@mui/material/Grid";
 
 const CoursesList = ({ courses }) => {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    <Grid container spacing={3}>
       {Object.entries(courses).map(([id, info]) => (
-        <div key={id} style={{ flex: "1", width: "250px", margin: "10px" }}>
-          <CourseCard id={id} info={info} />
-        </div>
+        <Grid item key={id} xs={12} sm={6} md={4} lg={3}>
+          <CourseCard info={info} />
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 

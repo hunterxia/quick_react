@@ -1,7 +1,7 @@
 export default function Banner({ title }) {
   return (
     <div>
-      <h1>{title}</h1>
+      <h1 style={{ textAlign: "center" }}>{title}</h1>
     </div>
   );
 }
