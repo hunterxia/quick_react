@@ -2,7 +2,7 @@ import { useState } from "react";
 import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
 
-const TermPage = () => {
+const TermPage = ({ courses }) => {
   const [selectedTerm, setSelectedTerm] = useState("Fall");
 
   const handleSelectTerm = (term) => {
@@ -16,7 +16,7 @@ const TermPage = () => {
         selectedTerm={selectedTerm}
         onSelectTerm={handleSelectTerm}
       />
-      <CourseList selectedTerm={selectedTerm} />
+      <CourseList courses={courses} selectedTerm={selectedTerm} />
     </div>
   );
 };
