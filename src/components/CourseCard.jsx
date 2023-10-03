@@ -3,14 +3,15 @@ import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 
 const CourseCard = ({ info, isSelected, onToggleSelect }) => {
+  const cardStyles = {
+    cursor: "pointer",
+    border: isSelected ? "2px solid #007BFF" : "none",
+    backgroundColor: isSelected ? "lemonchiffon" : "white",
+    color: isSelected ? "green" : "black",
+  };
+
   return (
-    <Card
-      onClick={onToggleSelect}
-      style={{
-        cursor: "pointer",
-        border: isSelected ? "2px solid #007BFF" : "none",
-      }}
-    >
+    <Card onClick={onToggleSelect} style={cardStyles}>
       <CardContent>
         <h3>
           {info.term} CS {info.number}

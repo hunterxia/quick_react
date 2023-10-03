@@ -1,4 +1,3 @@
-import "./App.css";
 import Banner from "./components/Banner";
 import TermPage from "./components/TermPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
