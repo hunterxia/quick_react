@@ -2,9 +2,15 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 
-export default function CourseCard({ info }) {
+const CourseCard = ({ info, isSelected, onToggleSelect }) => {
   return (
-    <Card>
+    <Card
+      onClick={onToggleSelect}
+      style={{
+        cursor: "pointer",
+        border: isSelected ? "2px solid #007BFF" : "none",
+      }}
+    >
       <CardContent>
         <h3>
           {info.term} CS {info.number}
@@ -15,4 +21,6 @@ export default function CourseCard({ info }) {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default CourseCard;
