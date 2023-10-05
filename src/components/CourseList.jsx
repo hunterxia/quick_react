@@ -6,6 +6,7 @@ const CoursesList = ({
   selectedTerm,
   onToggleSelectCourse,
   selectedCourses,
+  isClassSelectable,
 }) => {
   const handleToggleCourseSelection = (courseId) => {
     onToggleSelectCourse(courseId);
@@ -24,6 +25,7 @@ const CoursesList = ({
               info={info}
               isSelected={selectedCourses.includes(id)}
               onToggleSelect={() => handleToggleCourseSelection(id)}
+              isSelectable={isClassSelectable(info)}
             />
           </Grid>
         ))}

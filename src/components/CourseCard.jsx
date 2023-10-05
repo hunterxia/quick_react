@@ -2,16 +2,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 
-const CourseCard = ({ info, isSelected, onToggleSelect }) => {
+const CourseCard = ({ info, onToggleSelect, isSelected, isSelectable }) => {
   const cardStyles = {
-    cursor: "pointer",
+    cursor: isSelectable ? "pointer" : "not-allowed",
     border: isSelected ? "2px solid #007BFF" : "none",
     backgroundColor: isSelected ? "lemonchiffon" : "white",
     color: isSelected ? "green" : "black",
   };
 
   return (
-    <Card onClick={onToggleSelect} style={cardStyles}>
+    <Card onClick={isSelectable ? onToggleSelect : null} style={cardStyles}>
       <CardContent>
         <h3>
           {info.term} CS {info.number}
