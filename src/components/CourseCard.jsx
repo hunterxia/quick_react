@@ -1,6 +1,7 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
+import CourseForm from "./CourseForm";
 
 const CourseCard = ({ info, onToggleSelect, isSelected, isSelectable }) => {
   const cardStyles = {
@@ -8,10 +9,20 @@ const CourseCard = ({ info, onToggleSelect, isSelected, isSelectable }) => {
     border: isSelected ? "2px solid #007BFF" : "none",
     backgroundColor: isSelected ? "lemonchiffon" : "white",
     color: isSelected ? "green" : "black",
+    opacity: isSelected ? 1 : 0.7,
+  };
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
   };
 
   return (
-    <Card onClick={isSelectable ? onToggleSelect : null} style={cardStyles}>
+    <Card style={cardStyles} onClick={isSelectable ? onToggleSelect : null}>
       <CardContent>
         <h3>
           {info.term} CS {info.number}
@@ -19,7 +30,13 @@ const CourseCard = ({ info, onToggleSelect, isSelected, isSelectable }) => {
         <p> {info.title}</p>
         <Divider />
         <h3>{info.meets}</h3>
+        {isSelectable && <button onClick={handleEditClick}>Edit</button>}
       </CardContent>
+      {isEditing && (
+        <div style={{ padding: "16px" }}>
+          <CourseForm course={info} onCancel={handleCancelEdit} />
+        </div>
+      )}
     </Card>
   );
 };

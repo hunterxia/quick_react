@@ -11,25 +11,13 @@ const TermSelector = ({ selectedTerm, onSelectTerm }) => {
   return (
     <div style={containerStyles}>
       <Stack spacing={2} direction="row">
-        <Button
-          variant="contained"
-          onClick={() => onSelectTerm("Fall")}
-          disabled={selectedTerm === "Fall"}
-        >
+        <Button variant="contained" onClick={() => onSelectTerm("Fall")}>
           Fall
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => onSelectTerm("Spring")}
-          disabled={selectedTerm === "Spring"}
-        >
+        <Button variant="contained" onClick={() => onSelectTerm("Spring")}>
           Spring
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => onSelectTerm("Winter")}
-          disabled={selectedTerm === "Winter"}
-        >
+        <Button variant="contained" onClick={() => onSelectTerm("Winter")}>
           Winter
         </Button>
       </Stack>

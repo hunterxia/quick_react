@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
 import SchedulePopup from "./SchedulePopup";
-import { doesNewClassHaveConflicts } from "../utilities/timeConflict";
+import Button from "@mui/material/Button";
 
 const TermPage = ({ courses }) => {
   const [selectedTerm, setSelectedTerm] = useState("Fall");
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const isClassSelectable = (newClass) => {
-    return !doesNewClassHaveConflicts(newClass, selectedCourses);
-  };
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -51,19 +48,17 @@ const TermPage = ({ courses }) => {
   return (
     <div>
       <div className="schedule-popup-link">
-        <button onClick={handleOpenPopup}>Course Plan</button>
+        <Button variant="contained" onClick={handleOpenPopup}>
+          Course Plan
+        </Button>
       </div>
 
-      <TermSelector
-        selectedTerm={selectedTerm}
-        onSelectTerm={handleSelectTerm}
-      />
+      <TermSelector onSelectTerm={handleSelectTerm} />
       <CourseList
         courses={courses}
         selectedTerm={selectedTerm}
         onToggleSelectCourse={handleToggleSelectCourse}
         selectedCourses={selectedCourses}
-        isClassSelectable={isClassSelectable}
       />
       {isPopupOpen && (
         <SchedulePopup

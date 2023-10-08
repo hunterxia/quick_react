@@ -1,47 +1,44 @@
-function convertTimeStringToTime(dateString, timeString) {
-  const [hours, minutes] = timeString.split(":");
-  const date = new Date(`${dateString}T${hours}:${minutes}`);
-  return date;
-}
+export const areCoursesEqual = (course1, course2) =>
+  course1.term === course2.term &&
+  course1.number === course2.number &&
+  course1.title === course2.title;
 
-// Function to check if two time intervals overlap
-export function doTimeIntervalsOverlap(time1, time2) {
-  return time1[0] <= time2[1] && time1[1] >= time2[0];
-}
+const parseMeetingTime = (meetingTimeStr) => {
+  const [daysStr, timeStr] = meetingTimeStr.split(" ");
+  const [startTimeStr, endTimeStr] = timeStr.split("-");
+  const days = extractDays(daysStr);
+  const startTime = convertTimeToMinutes(startTimeStr);
+  const endTime = convertTimeToMinutes(endTimeStr);
 
-// Function to check if two classes have a time conflict
-export function doClassesConflict(class1, class2) {
-  const days1 = class1.meets.split(" ");
-  const days2 = class2.meets.split(" ");
+  return {
+    days,
+    startTime,
+    endTime,
+  };
+};
 
-  for (const day1 of days1) {
-    for (const day2 of days2) {
-      if (day1 === day2) {
-        const time1 = [
-          convertTimeStringToTime(class1.start),
-          convertTimeStringToTime(class1.end),
-        ];
-        const time2 = [
-          convertTimeStringToTime(class2.start),
-          convertTimeStringToTime(class2.end),
-        ];
+const extractDays = (daysStr) => {
+  const regex = /[A-Z][a-z]*/g;
+  return daysStr.match(regex);
+};
 
-        if (doTimeIntervalsOverlap(time1, time2)) {
-          return true;
-        }
-      }
-    }
-  }
+const convertTimeToMinutes = (timeStr) => {
+  const [hours, minutes] = timeStr.split(":");
+  return parseInt(hours) * 60 + parseInt(minutes);
+};
 
-  return false;
-}
+const doTimeIntervalsOverlap = (interval1, interval2) =>
+  interval1.startTime < interval2.endTime &&
+  interval1.endTime > interval2.startTime;
 
-// Function to check if a new class has conflicts with existing selected classes
-export function doesNewClassHaveConflicts(newClass, selectedClasses) {
-  for (const selectedClass of selectedClasses) {
-    if (doClassesConflict(newClass, selectedClass)) {
-      return true;
-    }
-  }
-  return false;
-}
+export const getConflictedCourses = (selectedCourses, unselectedCourses) =>
+  unselectedCourses.filter((course) =>
+    selectedCourses.some(
+      (selectedCourse) =>
+        selectedCourse.term === course.term &&
+        doTimeIntervalsOverlap(
+          parseMeetingTime(selectedCourse.meets),
+          parseMeetingTime(course.meets)
+        )
+    )
+  );
