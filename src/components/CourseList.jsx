@@ -19,6 +19,11 @@ const CoursesList = ({
     onToggleSelectCourse(courseId);
   };
 
+  const conflictedCourses = getConflictedCourses(
+    selectedCourses,
+    Object.values(courses)
+  );
+
   const isCourseSelectable = (course) => {
     const conflictedCourses = getConflictedCourses(selectedCourses, [course]);
 
@@ -44,17 +49,16 @@ const CoursesList = ({
         .filter(([id, course]) => course.term === selectedTerm)
         .map(([id, info]) => (
           <Grid item key={id} xs={12} sm={6} md={4} lg={3}>
-            {editingCourse === id ? (
-              <CourseForm course={info} onCancel={handleCancelEdit} />
-            ) : (
-              <CourseCard
-                info={info}
-                isSelected={selectedCourses.includes(id)}
-                onToggleSelect={() => handleToggleCourseSelection(id)}
-                isSelectable={isCourseSelectable(info)}
-                onEdit={() => handleEditCourse(id)}
-              />
-            )}
+            <CourseCard
+              info={info}
+              isSelected={selectedCourses.includes(id)}
+              onToggleSelect={() => handleToggleCourseSelection(id)}
+              isSelectable={isCourseSelectable(info)}
+              onEdit={() => handleEditCourse(id)}
+              conflicted={conflictedCourses.some((course) =>
+                areCoursesEqual(course, info)
+              )}
+            />
           </Grid>
         ))}
     </Grid>

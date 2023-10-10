@@ -2,13 +2,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import CourseForm from "./CourseForm";
+import { useState } from "react";
 
-const CourseCard = ({ info, onToggleSelect, isSelected, isSelectable }) => {
+const CourseCard = ({
+  info,
+  onToggleSelect,
+  isSelected,
+  isSelectable,
+  conflicted,
+}) => {
   const cardStyles = {
-    cursor: isSelectable ? "pointer" : "not-allowed",
+    cursor: isSelectable && !conflicted ? "pointer" : "not-allowed",
     border: isSelected ? "2px solid #007BFF" : "none",
-    backgroundColor: isSelected ? "lemonchiffon" : "white",
-    color: isSelected ? "green" : "black",
+    backgroundColor: isSelected
+      ? "lemonchiffon"
+      : conflicted
+      ? "lightcoral"
+      : "white",
+    color: isSelected ? "green" : conflicted ? "white" : "black",
     opacity: isSelected ? 1 : 0.7,
   };
   const [isEditing, setIsEditing] = useState(false);
