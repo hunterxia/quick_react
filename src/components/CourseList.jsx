@@ -32,7 +32,6 @@ const CoursesList = ({
     );
   };
 
-  // State for editing a course
   const [editingCourse, setEditingCourse] = useState(null);
 
   const handleEditCourse = (courseId) => {
