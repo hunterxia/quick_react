@@ -5,8 +5,15 @@ import { useJsonQuery } from "./utilities/fetch";
 import { useDbData } from "./utilities/firebase";
 
 const Main = () => {
-  const [data, error] = useDbData("/");
-  console.log(data);
+  // const [data, error] = useDbData("/");
+  // console.log(data);
+
+  // if (error) return <h1>Error loading Schedule data: {`${error}`}</h1>;
+  // if (isLoading) return <h1>Loading Schedule data...</h1>;
+  // if (!data) return <h1>No Schedule data found</h1>;
+  const [data, isLoading, error] = useJsonQuery(
+    "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php"
+  );
 
   if (error) return <h1>Error loading Schedule data: {`${error}`}</h1>;
   if (isLoading) return <h1>Loading Schedule data...</h1>;

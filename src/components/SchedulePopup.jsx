@@ -11,7 +11,8 @@ const SchedulePopup = ({ courses, selectedCourses, onClose }) => {
           <ul>
             {selectedCourseInfos.map((courseInfo) => (
               <li key={courseInfo.id}>
-                CS {courseInfo.number}: {courseInfo.title} ({courseInfo.meets})
+                {courseInfo.term} CS {courseInfo.number}: {courseInfo.title} (
+                {courseInfo.meets})
               </li>
             ))}
           </ul>

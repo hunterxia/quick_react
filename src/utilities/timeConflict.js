@@ -27,18 +27,24 @@ const convertTimeToMinutes = (timeStr) => {
   return parseInt(hours) * 60 + parseInt(minutes);
 };
 
-const doTimeIntervalsOverlap = (interval1, interval2) =>
-  interval1.startTime < interval2.endTime &&
-  interval1.endTime > interval2.startTime;
+const doTimeIntervalsOverlap = (interval1, interval2) => {
+  const daysOverlap = interval1.days.some((day) =>
+    interval2.days.includes(day)
+  );
+  const timeOverlap =
+    interval1.startTime < interval2.endTime &&
+    interval1.endTime > interval2.startTime;
+  return daysOverlap && timeOverlap;
+};
 
 export const getConflictedCourses = (selectedCourses, unselectedCourses) =>
   unselectedCourses.filter((course) =>
-    selectedCourses.some(
-      (selectedCourse) =>
+    selectedCourses.some((selectedCourse) => {
+      const interval1 = parseMeetingTime(selectedCourse.meets);
+      const interval2 = parseMeetingTime(course.meets);
+      return (
         selectedCourse.term === course.term &&
-        doTimeIntervalsOverlap(
-          parseMeetingTime(selectedCourse.meets),
-          parseMeetingTime(course.meets)
-        )
-    )
+        doTimeIntervalsOverlap(interval1, interval2)
+      );
+    })
   );
