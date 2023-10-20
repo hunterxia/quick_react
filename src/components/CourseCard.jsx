@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useDbUpdate } from "../utilities/firebase";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CourseForm from "./CourseForm";
-import Divider from "@mui/material/Divider";
 
 const CourseCard = ({
   info,
@@ -12,6 +12,22 @@ const CourseCard = ({
   conflicted,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [update, result] = useDbUpdate(`/courses/${info.id}`);
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const handleCourseSubmit = (updatedCourse) => {
+    update(updatedCourse);
+    setIsEditing(false);
+  };
+
   const cardStyles = {
     cursor: isSelectable ? "pointer" : "not-allowed",
     border: isSelected ? "2px solid #007BFF" : "none",
@@ -24,27 +40,21 @@ const CourseCard = ({
     opacity: isSelected ? 1 : 0.7,
   };
 
-  const handleEditClick = (e) => {
-    e.stopPropagation();
-    setIsEditing(true);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-  };
-
   return (
     <Card style={cardStyles} onClick={isSelectable ? onToggleSelect : null}>
       <CardContent>
         {isEditing ? (
-          <CourseForm course={info} onCancel={handleCancelEdit} />
+          <CourseForm
+            course={info}
+            onCancel={handleCancelEdit}
+            onSubmit={handleCourseSubmit}
+          />
         ) : (
           <>
             <h3>
               {info.term} CS {info.number}
             </h3>
-            <p> {info.title}</p>
-            <Divider />
+            <p>{info.title}</p>
             <h3>{info.meets}</h3>
             {isSelectable && <button onClick={handleEditClick}>Edit</button>}
           </>

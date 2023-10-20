@@ -1,74 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const errorStyle = {
-  color: "red",
-  fontSize: "12px",
-};
+const CourseForm = ({ course, onCancel, onSubmit }) => {
+  const [state, setState] = useState({
+    title: course.title,
+    meets: course.meets,
+    errors: {},
+  });
 
-const CourseForm = ({ course, onCancel }) => {
-  const [title, setTitle] = useState(course.title);
-  const [meets, setMeets] = useState(course.meets);
-  const [errors, setErrors] = useState({});
-
-  const handleCancel = () => {
-    onCancel();
+  const validate = (key, value) => {
+    if (key === "title" && value.length < 2) {
+      return "Title must be at least two characters.";
+    }
+    if (
+      key === "meets" &&
+      !/^[A-Za-z]{1,7} \d{2}:\d{2}-\d{2}:\d{2}$/.test(value)
+    ) {
+      return "Meeting time must contain days and start-end, e.g., MWF 12:00-13:20";
+    }
+    return "";
   };
 
-  const validate = () => {
-    const newErrors = {};
-
-    if (title.length < 2) {
-      newErrors.title = "Title must be at least two characters.";
-    }
-
-    if (
-      meets !== "" &&
-      !/^[A-Za-z]{1,7} \d{2}:\d{2}-\d{2}:\d{2}$/.test(meets)
-    ) {
-      newErrors.meets =
-        "Meeting time must contain days and start-end, e.g., MWF 12:00-13:20";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const errMsg = validate(name, value);
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+      errors: {
+        ...prevState.errors,
+        [name]: errMsg,
+      },
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (validate()) {
-      // Do nothing for now. Later you can handle the submit here.
+    if (Object.values(state.errors).every((x) => x === "")) {
+      onSubmit({
+        title: state.title,
+        meets: state.meets,
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title</label>
+    <form onSubmit={handleSubmit} noValidate>
+      <div className="mb-3">
+        <label htmlFor="title" className="form-label">
+          Title
+        </label>
         <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          className="form-control"
+          id="title"
+          name="title"
+          value={state.title}
+          onChange={handleChange}
         />
-        {errors.title && <div style={errorStyle}>{errors.title}</div>}
+        <div className="invalid-feedback">{state.errors.title}</div>
       </div>
-
-      <div>
-        <label>Meeting Time</label>
+      <div className="mb-3">
+        <label htmlFor="meets" className="form-label">
+          Meeting Time
+        </label>
         <input
-          type="text"
-          value={meets}
-          onChange={(e) => setMeets(e.target.value)}
+          className="form-control"
+          id="meets"
+          name="meets"
+          value={state.meets}
+          onChange={handleChange}
         />
-        {errors.meets && <div style={errorStyle}>{errors.meets}</div>}
+        <div className="invalid-feedback">{state.errors.meets}</div>
       </div>
-
-      <div>
-        <button type="submit">Submit</button>
-        <button type="button" onClick={handleCancel}>
-          Cancel
-        </button>
-      </div>
+      <button type="submit" className="btn btn-primary me-auto">
+        Submit
+      </button>
+      <button
+        type="button"
+        className="btn btn-outline-dark me-2"
+        onClick={onCancel}
+      >
+        Cancel
+      </button>
     </form>
   );
 };
