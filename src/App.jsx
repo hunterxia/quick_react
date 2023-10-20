@@ -2,6 +2,8 @@ import Banner from "./components/Banner";
 import TermPage from "./components/TermPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useDbData } from "./utilities/firebase";
+import { BrowserRouter as Router } from "react-router-dom";
+import Navigation from "./components/navigation";
 
 const Main = () => {
   const [data, error] = useDbData("/");
@@ -10,10 +12,11 @@ const Main = () => {
   if (!data) return <h1>Loading Schedule data...</h1>;
 
   return (
-    <div>
+    <Router>
       <Banner title={data.title} />
+      <Navigation />
       <TermPage courses={data.courses} />
-    </div>
+    </Router>
   );
 };
 

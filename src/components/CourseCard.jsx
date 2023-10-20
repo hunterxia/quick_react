@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { useDbUpdate } from "../utilities/firebase";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CourseForm from "./CourseForm";
 
 const CourseCard = ({
   info,
+  id,
   onToggleSelect,
   isSelected,
   isSelectable,
   conflicted,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [update, result] = useDbUpdate(`/courses/${info.id}`);
 
   const handleEditClick = (e) => {
     e.stopPropagation();
@@ -20,11 +19,6 @@ const CourseCard = ({
   };
 
   const handleCancelEdit = () => {
-    setIsEditing(false);
-  };
-
-  const handleCourseSubmit = (updatedCourse) => {
-    update(updatedCourse);
     setIsEditing(false);
   };
 
@@ -44,11 +38,7 @@ const CourseCard = ({
     <Card style={cardStyles} onClick={isSelectable ? onToggleSelect : null}>
       <CardContent>
         {isEditing ? (
-          <CourseForm
-            course={info}
-            onCancel={handleCancelEdit}
-            onSubmit={handleCourseSubmit}
-          />
+          <CourseForm course={info} courseId={id} onCancel={handleCancelEdit} />
         ) : (
           <>
             <h3>

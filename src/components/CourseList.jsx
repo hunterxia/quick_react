@@ -48,6 +48,7 @@ const CoursesList = ({
             <Grid item key={id} xs={12} sm={6} md={4} lg={3}>
               <CourseCard
                 info={info}
+                id={id}
                 isSelected={isSelected}
                 onToggleSelect={() => isSelectable && onToggleSelectCourse(id)}
                 isSelectable={isSelectable}

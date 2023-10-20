@@ -1,45 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useDbUpdate } from "../utilities/firebase";
+import { useFormData } from "../utilities/useFormData";
 
-const CourseForm = ({ course, onCancel, onSubmit }) => {
-  const [state, setState] = useState({
-    title: course.title,
-    meets: course.meets,
-    errors: {},
-  });
+const validateCourseData = (key, value) => {
+  if (key === "title" && value.length < 2) {
+    return "Title must be at least two characters.";
+  }
+  if (
+    key === "meets" &&
+    !/^[A-Za-z]{1,7} \d{2}:\d{2}-\d{2}:\d{2}$/.test(value)
+  ) {
+    return "Meeting time must contain days and start-end, e.g., MWF 12:00-13:20";
+  }
+  return "";
+};
 
-  const validate = (key, value) => {
-    if (key === "title" && value.length < 2) {
-      return "Title must be at least two characters.";
-    }
-    if (
-      key === "meets" &&
-      !/^[A-Za-z]{1,7} \d{2}:\d{2}-\d{2}:\d{2}$/.test(value)
-    ) {
-      return "Meeting time must contain days and start-end, e.g., MWF 12:00-13:20";
-    }
-    return "";
-  };
+const CourseForm = ({ course, courseId, onCancel }) => {
+  const [state, change] = useFormData(validateCourseData, course);
+  const [update, result] = useDbUpdate(`/courses/${courseId}`);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const errMsg = validate(name, value);
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        [name]: errMsg,
-      },
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(state.errors).every((x) => x === "")) {
-      onSubmit({
-        title: state.title,
-        meets: state.meets,
-      });
+    if (!state.errors) {
+      try {
+        await update(state.values);
+        window.location.reload();
+      } catch (error) {
+        console.error("An error occurred during update:", error);
+      }
     }
   };
 
@@ -53,10 +41,10 @@ const CourseForm = ({ course, onCancel, onSubmit }) => {
           className="form-control"
           id="title"
           name="title"
-          value={state.title}
-          onChange={handleChange}
+          value={state.values.title}
+          onChange={change}
         />
-        <div className="invalid-feedback">{state.errors.title}</div>
+        <div className="invalid-feedback">{state.errors?.title}</div>
       </div>
       <div className="mb-3">
         <label htmlFor="meets" className="form-label">
@@ -66,10 +54,10 @@ const CourseForm = ({ course, onCancel, onSubmit }) => {
           className="form-control"
           id="meets"
           name="meets"
-          value={state.meets}
-          onChange={handleChange}
+          value={state.values.meets}
+          onChange={change}
         />
-        <div className="invalid-feedback">{state.errors.meets}</div>
+        <div className="invalid-feedback">{state.errors?.meets}</div>
       </div>
       <button type="submit" className="btn btn-primary me-auto">
         Submit
