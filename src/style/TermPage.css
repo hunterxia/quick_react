@@ -1,7 +1,4 @@
-.schedule-popup-link {
+.button-container {
   display: flex;
-  flex-direction: column;
-  align-items: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  justify-content: space-between;
 }

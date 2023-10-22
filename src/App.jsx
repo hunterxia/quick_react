@@ -2,7 +2,6 @@ import Banner from "./components/Banner";
 import TermPage from "./components/TermPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useDbData } from "./utilities/firebase";
-import Navigation from "./components/navigation";
 
 const Main = () => {
   const [data, error] = useDbData("/");
@@ -13,7 +12,6 @@ const Main = () => {
   return (
     <div>
       <Banner title={data.title} />
-      <Navigation />
       <TermPage courses={data.courses} />
     </div>
   );

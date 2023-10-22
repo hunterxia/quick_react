@@ -3,11 +3,29 @@ import TermSelector from "./TermSelector";
 import CourseList from "./CourseList";
 import SchedulePopup from "./SchedulePopup";
 import Button from "@mui/material/Button";
+import "../style/TermPage.css";
+import { signInWithGoogle, signOut, useAuthState } from "../utilities/firebase";
 
 const TermPage = ({ courses }) => {
   const [selectedTerm, setSelectedTerm] = useState("Fall");
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const SignInButton = () => (
+    <Button variant="contained" onClick={signInWithGoogle}>
+      Sign in
+    </Button>
+  );
+
+  const SignOutButton = () => (
+    <Button variant="contained" onClick={signOut}>
+      Sign out
+    </Button>
+  );
+
+  const AuthButton = () => {
+    const [user] = useAuthState();
+    return user ? <SignOutButton /> : <SignInButton />;
+  };
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -47,13 +65,14 @@ const TermPage = ({ courses }) => {
 
   return (
     <div>
-      <div className="schedule-popup-link">
+      <div className="button-container">
         <Button variant="contained" onClick={handleOpenPopup}>
           Course Plan
         </Button>
+        <AuthButton />
       </div>
-
       <TermSelector onSelectTerm={handleSelectTerm} />
+
       <CourseList
         courses={courses}
         selectedTerm={selectedTerm}
