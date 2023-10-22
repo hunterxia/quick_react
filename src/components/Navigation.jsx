@@ -1,16 +1,16 @@
-import { NavLink } from "react-router-dom";
 import { signInWithGoogle, signOut, useAuthState } from "../utilities/firebase";
+import { Button } from "@mui/material";
 
 const SignInButton = () => (
-  <button className="ms-auto btn btn-dark" onClick={signInWithGoogle}>
+  <Button variant="contained" onClick={signInWithGoogle}>
     Sign in
-  </button>
+  </Button>
 );
 
 const SignOutButton = () => (
-  <button className="ms-auto btn btn-dark" onClick={signOut}>
+  <Button variant="contained" onClick={signOut}>
     Sign out
-  </button>
+  </Button>
 );
 
 const AuthButton = () => {
@@ -22,12 +22,6 @@ const activation = ({ isActive }) => (isActive ? "active" : "inactive");
 
 const Navigation = () => (
   <nav className="d-flex">
-    <NavLink to="/" className={activation} end>
-      Posts
-    </NavLink>
-    <NavLink to="/users" className={activation} end>
-      Users
-    </NavLink>
     <AuthButton />
   </nav>
 );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CourseForm from "./CourseForm";
+import { useProfile } from "../utilities/profile";
 
 const CourseCard = ({
   info,
@@ -12,6 +13,7 @@ const CourseCard = ({
   conflicted,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [{ user, isAdmin }] = useProfile();
 
   const handleEditClick = (e) => {
     e.stopPropagation();
@@ -46,7 +48,9 @@ const CourseCard = ({
             </h3>
             <p>{info.title}</p>
             <h3>{info.meets}</h3>
-            {isSelectable && <button onClick={handleEditClick}>Edit</button>}
+            {isSelectable && user && isAdmin && (
+              <button onClick={handleEditClick}>Edit</button>
+            )}
           </>
         )}
       </CardContent>
