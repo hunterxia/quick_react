@@ -37,7 +37,11 @@ const CourseCard = ({
   };
 
   return (
-    <Card style={cardStyles} onClick={isSelectable ? onToggleSelect : null}>
+    <Card
+      style={cardStyles}
+      onClick={isSelectable ? onToggleSelect : null}
+      data-cy="course"
+    >
       <CardContent>
         {isEditing ? (
           <CourseForm course={info} courseId={id} onCancel={handleCancelEdit} />

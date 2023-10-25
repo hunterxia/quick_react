@@ -9,15 +9,27 @@ const TermSelector = ({ selectedTerm, onSelectTerm }) => {
   };
 
   return (
-    <div style={containerStyles}>
+    <div style={containerStyles} data-cy="course">
       <Stack spacing={2} direction="row">
-        <Button variant="contained" onClick={() => onSelectTerm("Fall")}>
+        <Button
+          variant="contained"
+          onClick={() => onSelectTerm("Fall")}
+          data-cy="Fall"
+        >
           Fall
         </Button>
-        <Button variant="contained" onClick={() => onSelectTerm("Spring")}>
+        <Button
+          variant="contained"
+          onClick={() => onSelectTerm("Spring")}
+          data-cy="Spring"
+        >
           Spring
         </Button>
-        <Button variant="contained" onClick={() => onSelectTerm("Winter")}>
+        <Button
+          variant="contained"
+          onClick={() => onSelectTerm("Winter")}
+          data-cy="Winter"
+        >
           Winter
         </Button>
       </Stack>
